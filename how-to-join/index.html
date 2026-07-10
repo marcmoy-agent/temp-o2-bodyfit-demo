@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How To Join | O2 BodyFit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body data-active-nav="trial">
+  <div id="site-header"></div>
+  <section class="page-head">
+    <div class="wrap rv">
+      <span class="sec-num">/ How To Join</span>
+      <h1>Your first day <em>on us</em></h1>
+      <p>No contracts, no pressure — book a free trial class and see if O2 is your gym.</p>
+    </div>
+  </section>
+  <section class="trial">
+    <div class="wrap">
+      <div class="trial-card rv">
+        <h2>Fill out the form for a trial class</h2>
+        <form class="trial-form" action="https://o2bodyfit.zenplanner.com" method="get">
+          <div class="trial-field"><label for="trial-name" class="mono">Name</label><input type="text" id="trial-name" name="name" required></div>
+          <div class="trial-field"><label for="trial-email" class="mono">Email</label><input type="email" id="trial-email" name="email" required></div>
+          <div class="trial-field"><label for="trial-phone" class="mono">Phone</label><input type="tel" id="trial-phone" name="phone"></div>
+          <div class="trial-field">
+            <label for="trial-time" class="mono">Class Time</label>
+            <select id="trial-time" name="class-time">
+              <option value="">— Please choose an option —</option>
+              <option value="5:45AM">5:45AM</option>
+              <option value="7:00AM">7:00AM</option>
+              <option value="8:15AM">8:15AM</option>
+              <option value="9:00AM">9:00AM</option>
+              <option value="4:30PM">4:30PM</option>
+              <option value="5:45PM">5:45PM</option>
+              <option value="7:00PM">7:00PM</option>
+            </select>
+          </div>
+          <div class="trial-hp" aria-hidden="true"><label for="trial-website">Website</label><input type="text" id="trial-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <button type="submit" class="btn">Book My Free Trial</button>
+        </form>
+        <p class="trial-note">You’ll finish sign-up on our ZenPlanner booking page.</p>
+      </div>
+    </div>
+  </section>
+  <div id="site-footer"></div>
+  <script src="../scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,645 @@
+/*
+Theme Name: O2 BodyFit
+Theme URI: https://o2bodyfit.com
+Author: O2 BodyFit redesign demo
+Description: Industrial, high-energy custom theme for O2 BodyFit (Daly City). Demo build — locked art-directed design with owner-editable content wired to the Customizer.
+Version: 0.1
+Requires at least: 6.0
+Tested up to: 6.5
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+Text Domain: o2-bodyfit
+*/
+
+:root{
+  --ink:#0a0a0b;
+  --ink2:#121214;
+  --smoke:#1a1a1d;
+  --line:#2b2b30;
+  --red:#ee2427;
+  --red-hot:#ff3b3e;
+  --red-deep:#c81b1e;
+  --paper:#f5f5f6;
+  --mut:#8c8c94;
+  --ff-display:'Oswald',sans-serif;
+  --ff-body:'Montserrat',sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);color:var(--paper);
+  font-family:var(--ff-body);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.mono{font-family:var(--ff-mono);text-transform:uppercase;letter-spacing:.18em;font-size:.7rem}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+
+/* grain + glow atmosphere */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* LOGO */
+.brand{display:inline-flex;align-items:center;background:var(--paper);
+  padding:9px 16px;border-radius:4px;transition:.2s;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+.brand:hover{box-shadow:0 0 22px rgba(238,36,39,.28)}
+.brand img{display:block;height:38px;width:auto}
+footer .brand img{height:44px}
+
+/* NAV */
+header{position:fixed;top:0;left:0;right:0;z-index:50;
+  background:linear-gradient(180deg,rgba(10,10,11,.96),rgba(10,10,11,0));
+  backdrop-filter:blur(6px);}
+/* Brand left, links right. */
+nav{display:flex;align-items:center;justify-content:space-between;height:78px}
+/* Top-left wordmark: Oswald display, "O2" white + "BodyFit" red (echoes the hero).
+   Hidden over the home hero, revealed on scroll (see body.home rules below). */
+.navbrand{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:1.25rem;letter-spacing:.01em;line-height:1;color:var(--red);
+  transition:opacity .3s,transform .3s}
+.navbrand span{color:var(--paper)}
+.navbrand:hover{color:var(--red-hot)}
+/* Home page: hide the brand until the hero scrolls past (body.scrolled, set by JS). */
+body.home .navbrand{opacity:0;transform:translateY(-8px);pointer-events:none}
+/* Reveal on scroll OR when the mobile menu is open (menu shows a solid header,
+   so the wordmark should appear even before the hero scrolls past). */
+body.home.scrolled .navbrand,
+body.home.nav-open .navbrand{opacity:1;transform:none;pointer-events:auto}
+@media(prefers-reduced-motion:reduce){
+  body.home .navbrand{transform:none}
+}
+.navlinks{display:flex;gap:34px;align-items:center}
+.navlinks a{font-family:var(--ff-body);text-transform:uppercase;font-weight:600;
+  font-size:.78rem;letter-spacing:.1em;color:#cfcfd4;transition:color .2s;position:relative}
+.navlinks a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;
+  background:var(--red);transition:width .25s}
+.navlinks a:hover{color:#fff}
+.navlinks a:hover::after{width:100%}
+.btn{font-family:var(--ff-body);text-transform:uppercase;font-weight:700;
+  letter-spacing:.08em;font-size:.78rem;padding:13px 22px;border:2px solid var(--red);
+  color:#fff;background:var(--red);cursor:pointer;transition:.2s;display:inline-block}
+.btn:hover{background:var(--red-hot);border-color:var(--red-hot);box-shadow:0 0 26px rgba(238,36,39,.45)}
+.btn-arrow{vertical-align:-0.12em;margin-left:.15em}
+.btn-ghost{background:transparent;color:var(--paper);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--red);color:#fff;background:transparent;box-shadow:none}
+.navtoggle{display:none}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;
+  padding-bottom:64px;padding-top:120px;overflow:hidden}
+.hero-media{position:absolute;inset:0;z-index:0}
+.hero-media img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.08) brightness(.8)}
+.hero-media::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(10,10,11,.9) 0%,rgba(10,10,11,.32) 55%,rgba(10,10,11,.5) 100%),
+  radial-gradient(120% 80% at 82% 18%,rgba(238,36,39,.16),transparent 58%)}
+.hero-inner{position:relative;z-index:2;width:100%}
+.kicker{display:inline-flex;align-items:center;gap:10px;color:var(--red);margin-bottom:26px;font-weight:600}
+.kicker::before{content:"";width:40px;height:2px;background:var(--red)}
+.hero h1{font-family:var(--ff-display);font-weight:700;text-transform:uppercase;
+  font-size:clamp(3.2rem,9vw,8.5rem);line-height:.92;letter-spacing:-.01em;
+  text-wrap:balance}
+.hero h1 .out{-webkit-text-stroke:1.5px var(--paper);color:transparent}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero p{max-width:440px;color:#c6c6cc;font-size:1.05rem;margin:28px 0 34px}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1;background:var(--red)}}
+
+/* marquee ticker */
+.ticker{background:var(--red);color:#fff;overflow:hidden;padding:12px 0;
+  border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.ticker-track{display:flex;gap:0;white-space:nowrap;animation:scroll 30s linear infinite;font-family:var(--ff-display);
+  text-transform:uppercase;font-weight:700;font-size:1.05rem;letter-spacing:.05em}
+.ticker-track span{padding:0 28px;display:inline-flex;align-items:center;gap:28px}
+.ticker-track span::after{content:"◆";font-size:.6rem}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* SECTION shell */
+section{position:relative;z-index:2}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;
+  margin-bottom:52px;flex-wrap:wrap}
+.sec-head h2{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:clamp(2rem,4.5vw,3.6rem);line-height:.95;letter-spacing:-.01em}
+.sec-head h2 em{font-style:normal;color:var(--red)}
+.sec-num{font-family:var(--ff-mono);color:var(--red);font-size:.8rem}
+
+/* PROGRAMS */
+.programs{padding:110px 0}
+.prog-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--line)}
+.prog{background:var(--ink2);padding:44px 40px;min-height:280px;position:relative;
+  display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.prog::before{content:attr(data-n);position:absolute;right:24px;top:14px;
+  font-family:var(--ff-display);font-weight:700;font-size:5rem;color:#ffffff09;line-height:1}
+.prog .tag{color:var(--red);font-weight:600}
+.prog-title{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:2rem;line-height:1;margin:auto 0 14px}
+.prog p{color:var(--mut);max-width:34ch}
+
+/* SUB-PAGE HEADER (e.g. /schedule/) — clears the fixed nav, sets the tone */
+.page-head{position:relative;z-index:2;padding:170px 0 20px;border-bottom:1px solid var(--line);
+  background:radial-gradient(120% 130% at 80% -10%,rgba(238,36,39,.14),transparent 55%)}
+.page-head .sec-num{display:block;margin-bottom:14px}
+.page-head h1{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:clamp(2.6rem,6vw,5rem);line-height:.95;letter-spacing:-.01em}
+.page-head h1 em{font-style:normal;color:var(--red)}
+.page-head p{color:#c6c6cc;max-width:52ch;margin-top:22px;font-size:1.05rem}
+
+/* SUB-PAGE HEADER — hero slider variant (About page). Rotating photos behind
+   the header text, matching the home hero's grayscale + dark/red gradient. */
+.page-head--slider{overflow:hidden;padding:190px 0 56px;border-bottom:0;
+  background:var(--ink);display:flex;align-items:flex-end;min-height:min(72vh,640px)}
+.page-head--slider .wrap{position:relative;z-index:2;width:100%}
+.ph-slides{position:absolute;inset:0;z-index:0}
+.ph-slide{position:absolute;inset:0;background-size:cover;background-position:center;
+  filter:grayscale(1) contrast(1.08) brightness(.8);
+  opacity:0;transition:opacity 1.1s ease;will-change:opacity}
+.ph-slide.is-active{opacity:1}
+/* Same overlay recipe as the home hero: dark left-to-right wash + red glow. */
+.ph-slides::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,rgba(10,10,11,.9) 0%,rgba(10,10,11,.32) 55%,rgba(10,10,11,.5) 100%),
+  radial-gradient(120% 80% at 82% 18%,rgba(238,36,39,.16),transparent 58%)}
+
+/* Prev / next arrows */
+.ph-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+  width:52px;height:52px;display:flex;align-items:center;justify-content:center;
+  background:rgba(10,10,11,.42);border:1px solid rgba(255,255,255,.18);color:var(--paper);
+  cursor:pointer;transition:.2s;backdrop-filter:blur(4px)}
+.ph-nav:hover{background:var(--red);border-color:var(--red);color:#fff;
+  box-shadow:0 0 26px rgba(238,36,39,.45)}
+.ph-nav svg{display:block}
+.ph-prev{left:32px}
+.ph-next{right:32px}
+
+/* Dots */
+.ph-dots{position:absolute;left:0;right:0;bottom:26px;z-index:3;
+  display:flex;justify-content:center;gap:12px}
+.ph-dot{width:34px;height:4px;padding:0;border:0;cursor:pointer;
+  background:rgba(255,255,255,.28);transition:.25s}
+.ph-dot:hover{background:rgba(255,255,255,.55)}
+.ph-dot.is-active{background:var(--red);width:52px}
+
+/* SCHEDULE — fixed standing hours (not a calendar, not editable) */
+.schedule{padding:110px 0;border-top:1px solid var(--line)}
+.schedule--page{border-top:0;padding-top:60px}
+.sched-cta{margin-top:48px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.sched-fixed{display:grid;grid-template-columns:1.35fr 1fr;gap:2px;background:var(--line)}
+.sched-block{background:var(--ink2);padding:48px 44px 52px}
+.sched-block-day{display:inline-block;color:var(--red);font-weight:600;
+  padding-bottom:12px;margin-bottom:22px;border-bottom:2px solid var(--red)}
+.sched-block-day em{font-style:normal}
+.sched-block h2{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:clamp(1.8rem,3vw,2.6rem);line-height:1;margin-bottom:16px}
+.sched-block p{color:var(--mut);max-width:46ch;margin-bottom:14px}
+.sched-block p:last-of-type{margin-bottom:0}
+.sched-block p em{font-style:normal;color:var(--paper);font-weight:600}
+.sched-block--feat{background:var(--red);color:#fff}
+.sched-block--feat .sched-block-day{color:#fff;border-bottom-color:#fff}
+.sched-block--feat p{color:#ffffffd8}
+.sched-block--feat p em{color:#fff}
+.sched-block--feat p a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.sched-block--feat p a:hover{text-decoration-thickness:2px}
+/* Weekday time columns */
+.sched-times{display:flex;gap:56px;margin-top:32px}
+.sched-time-label{color:var(--red);font-weight:600;display:block;
+  padding-bottom:14px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.sched-times ul{list-style:none}
+.sched-times li{font-family:var(--ff-display);font-weight:600;font-size:1.5rem;
+  line-height:1.55;letter-spacing:.01em}
+.sched-times li span{font-family:var(--ff-body);font-size:.72rem;color:var(--mut);
+  margin-left:4px;text-transform:uppercase;letter-spacing:.08em}
+/* Footnote marker + caveat line (e.g. "no 7pm on Fridays"). */
+.sched-mark{color:var(--red);font-weight:700}
+.sched-times li .sched-mark{font-size:.9rem;vertical-align:super;margin-left:2px;line-height:0}
+.sched-note{margin-top:26px;color:var(--mut);font-size:.8rem;letter-spacing:.02em}
+
+/* MEMBERS ACCESS — hub of action cards + the locked "members only" gate.
+   The live ZenPlanner portal is descoped; these pages keep the URLs alive. */
+.member-hub{padding:150px 0 110px}
+.member-hub-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--line)}
+.member-card{background:var(--ink2);padding:44px 40px;min-height:200px;position:relative;
+  display:flex;flex-direction:column;gap:12px;overflow:hidden;transition:background .35s}
+.member-card:hover{background:var(--smoke)}
+.member-card h3{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:1.7rem;line-height:1;transition:color .3s}
+.member-card:hover h3{color:var(--red)}
+.member-card p{color:var(--mut);max-width:34ch}
+
+/* Locked gate panel (member-login / sign-up / cancel / freeze) */
+.member-portal{padding:150px 0 110px}
+.member-gate{background:var(--ink2);border:1px solid var(--line);padding:64px 48px;
+  max-width:640px;margin:0 auto;text-align:center;
+  background-image:radial-gradient(120% 130% at 50% -20%,rgba(238,36,39,.12),transparent 60%)}
+.member-gate-badge{display:inline-block;color:var(--red);font-weight:600;
+  padding-bottom:10px;margin-bottom:22px;border-bottom:2px solid var(--red)}
+.member-gate h2{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:clamp(1.6rem,3.5vw,2.4rem);line-height:1.05;letter-spacing:-.01em;margin-bottom:18px}
+.member-gate p{color:#c6c6cc;max-width:46ch;margin:0 auto 32px;font-size:1.02rem}
+.member-gate-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.member-embed{background:var(--ink2);border:1px solid var(--line);padding:56px 48px;
+  max-width:980px;margin:0 auto;text-align:center;
+  background-image:radial-gradient(120% 130% at 50% -20%,rgba(238,36,39,.12),transparent 60%)}
+.member-embed h2{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:clamp(1.6rem,3.5vw,2.4rem);line-height:1.05;letter-spacing:-.01em;margin-bottom:26px}
+.member-embed-frame{border:1px solid var(--line);background:#fff;overflow:hidden}
+.member-embed-frame iframe{display:block;width:100%;height:500px;border:0;background:#fff}
+.member-embed-note{color:var(--mut);font-size:.9rem;text-align:center;margin-top:18px}
+.member-embed-note a{color:var(--red)}
+.member-embed-note a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* HOW TO JOIN — free-trial lead form. Presentational: submit hands off to
+   ZenPlanner (see page-how-to-join.php). Mirrors the .member-gate card. */
+.trial{padding:60px 0 110px}
+.trial-card{background:var(--ink2);border:1px solid var(--line);padding:56px 48px;
+  max-width:560px;margin:0 auto;
+  background-image:radial-gradient(120% 130% at 50% -20%,rgba(238,36,39,.12),transparent 60%)}
+.trial-card h2{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:clamp(1.5rem,3.2vw,2.1rem);line-height:1.05;letter-spacing:-.01em;margin-bottom:32px}
+.trial-field{margin-bottom:22px}
+.trial-field label{display:block;color:var(--red);font-weight:500;margin-bottom:10px}
+.trial-form input,.trial-form select{width:100%;font-family:var(--ff-body);font-size:1rem;
+  color:var(--paper);background:var(--smoke);border:1px solid var(--line);
+  padding:14px 16px;transition:border-color .2s}
+.trial-form input:focus,.trial-form select:focus{outline:none;border-color:var(--red)}
+.trial-form select{appearance:none;cursor:pointer}
+.trial-form .btn{display:block;width:100%;margin-top:8px;text-align:center}
+/* Honeypot: taken out of the visual/AT flow but still submitted if a bot fills it. */
+.trial-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.trial-note{color:var(--mut);font-size:.9rem;text-align:center;margin-top:20px}
+.trial-note a{color:var(--red)}
+/* CALENDAR — the monthly boot-camp image + RSVP note. Give the section vertical
+   breathing room so the page-head/footer borders don't touch the image or note. */
+.calendar{padding:60px 0 110px}
+/* The calendar image is owner-uploaded, so its dimensions are unknown. Frame it
+   in a branded mount and let the image fit INSIDE fixed bounds: width/height
+   auto with both a max-width and a max-height means any aspect ratio — a tall
+   phone photo or a wide scan — scales DOWN to fit (never upscales blurry) and a
+   portrait can't blow out the page height. Odd ratios letterbox against the
+   panel, so they read as intentional rather than broken. */
+.calendar-figure{
+  max-width:1000px;margin:0 auto;
+  background:var(--ink2);
+  border:1px solid var(--line);
+  border-top:3px solid var(--red);
+  padding:clamp(14px,2.4vw,26px);
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.9);
+}
+.calendar-figure img{
+  display:block;margin:0 auto;
+  width:auto;height:auto;
+  max-width:100%;max-height:76vh;
+}
+/* Calendar RSVP note — highlight the email in red, matching the contact page. */
+.calendar-note a{color:var(--red);font-weight:600}
+.calendar-note a:hover{text-decoration:underline;text-underline-offset:3px}
+/* Textarea shares the input styling (the rule above only targets input/select). */
+.trial-form textarea{width:100%;font-family:var(--ff-body);font-size:1rem;
+  color:var(--paper);background:var(--smoke);border:1px solid var(--line);
+  padding:14px 16px;transition:border-color .2s;resize:vertical;min-height:120px}
+.trial-form textarea:focus{outline:none;border-color:var(--red)}
+
+/* CONTACT — message form (mailto: hand-off, see page-contact.php) beside an
+   address card + map. Reuses .trial-* for the form and .addr for the details. */
+.contact{padding:60px 0 110px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.contact-grid .trial-card{margin:0}          /* fill the grid cell, not center */
+.contact-info{display:flex;flex-direction:column;gap:24px}
+.contact-details{background:var(--ink2);border:1px solid var(--line);padding:36px 40px}
+.contact-details .addr{display:flex;gap:16px;align-items:flex-start;
+  padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.contact-details .addr:last-child{padding-bottom:0;margin-bottom:0}
+.contact-details .addr .ic{color:var(--red);font-size:1.3rem;line-height:1}
+/* Inline-SVG contact icons (replaced emoji-variant glyphs; see o2_icon()). */
+.addr .ic{display:inline-flex}
+.addr .ic svg{display:block}
+.contact-details .addr b{font-family:var(--ff-display);text-transform:uppercase;
+  letter-spacing:.05em;display:block;margin-bottom:4px}
+.contact-details .addr span{color:var(--mut);font-size:.92rem}
+.contact-details .addr a{color:var(--paper)}
+.contact-details .addr a:hover{color:var(--red)}
+.contact-map{border:1px solid var(--line);line-height:0}
+.contact-map iframe{width:100%;min-height:340px;border:0;display:block}
+
+/* ABOUT — story intro. The .wrap already gives the centered 1280 container;
+   cap the text column (not the wrap) so the story stays LEFT-aligned with the
+   page header, stat band, and every section below it. */
+.about{padding:80px 0 20px}
+.about-lead{font-family:var(--ff-display);font-weight:500;text-transform:none;
+  font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.2;letter-spacing:-.01em;
+  margin-bottom:26px;max-width:26ch}
+.about-story p{color:#c6c6cc;font-size:1.05rem;max-width:68ch;margin-bottom:22px}
+.about-story p:last-child{margin-bottom:0}
+.about-story p em{font-style:normal;color:var(--paper);font-weight:600}
+.about-story p b{color:var(--red);font-weight:700}
+
+/* ABOUT — "what we're not / what we are" duo (mirrors the schedule blocks) */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line)}
+.duo-block{background:var(--ink2);padding:48px 44px 52px}
+.duo-tag{display:inline-block;color:var(--red);font-weight:600;
+  padding-bottom:12px;margin-bottom:24px;border-bottom:2px solid var(--red)}
+.duo-block--feat{background:var(--red);color:#fff}
+.duo-block--feat .duo-tag{color:#fff;border-bottom-color:#fff}
+.duo-block p{color:var(--mut);line-height:1.6;max-width:48ch}
+.duo-block p + p{margin-top:14px}
+.duo-block p em{font-style:normal;color:var(--paper);font-weight:600}
+.duo-block--feat p{color:#ffffffdd}
+.duo-block--feat p em{color:#fff}
+
+/* ABOUT — coaching crew */
+.coaches{padding:110px 0;border-top:1px solid var(--line)}
+.coach-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:var(--line)}
+.coach{background:var(--ink2);padding:40px 24px 36px;text-align:center;transition:background .3s}
+.coach:hover{background:var(--smoke)}
+.coach-ava{display:flex;align-items:center;justify-content:center;width:84px;height:84px;
+  margin:0 auto 22px;border:2px solid var(--red);color:var(--red);
+  font-family:var(--ff-display);font-weight:700;font-size:1.7rem;letter-spacing:.04em;
+  transition:background .3s,color .3s}
+.coach:hover .coach-ava{background:var(--red);color:#fff}
+/* Photo variant: round full-color portrait. */
+.coach-ava--photo{padding:0;overflow:hidden;border-radius:50%;background:var(--ink)}
+.coach-ava--photo img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:contrast(1.05)}
+.coach h3{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:1.2rem;line-height:1.05;margin-bottom:8px;transition:color .3s}
+/* Clickable coach cards (link to /speaker/{slug}/): name goes red on hover. */
+a.coach:hover h3{color:var(--red)}
+
+/* COACH PROFILE (/speaker/{slug}/) — bio page for one trainer. */
+.coach-profile{padding:70px 0 110px}
+.coach-profile-grid{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:start}
+.coach-profile-photo{border-radius:50%;overflow:hidden;background:var(--ink);
+  aspect-ratio:1;border:2px solid var(--line)}
+.coach-profile-photo img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:contrast(1.05)}
+.coach-profile-bio-title{color:var(--red);font-weight:500;display:block;
+  padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--red)}
+.coach-profile-body p{color:#c6c6cc;font-size:1.05rem;max-width:68ch;margin-bottom:18px}
+.coach-creds{list-style:none;margin:26px 0 0;display:flex;flex-direction:column;gap:10px;
+  max-width:68ch}
+.coach-creds li{position:relative;padding-left:22px;color:var(--mut);font-size:.95rem}
+.coach-creds li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;
+  background:var(--red);transform:rotate(45deg)}
+.coach-profile-back{margin-top:38px}
+
+/* ABOUT — FAQ accordion (native <details>, no JS) */
+.faq{padding:110px 0;background:var(--ink2);border-top:1px solid var(--line)}
+.faq-list{border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item summary{list-style:none;cursor:pointer;padding:26px 60px 26px 0;position:relative;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  font-family:var(--ff-display);text-transform:uppercase;font-weight:600;
+  font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.15;letter-spacing:.01em;transition:color .2s}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary:hover{color:var(--red)}
+.faq-mark{position:absolute;right:0;top:50%;width:18px;height:18px;flex:none;transform:translateY(-50%)}
+.faq-mark::before,.faq-mark::after{content:"";position:absolute;background:var(--red);
+  top:50%;left:50%;transition:transform .25s}
+.faq-mark::before{width:18px;height:2px;transform:translate(-50%,-50%)}
+.faq-mark::after{width:2px;height:18px;transform:translate(-50%,-50%)}
+.faq-item[open] .faq-mark::after{transform:translate(-50%,-50%) scaleY(0)}
+.faq-body{padding:0 60px 28px 0}
+.faq-body p{color:#c6c6cc;max-width:70ch;font-size:1rem;line-height:1.6}
+.faq-body p + p{margin-top:14px}
+.about-cta{margin-top:56px;display:flex;justify-content:center}
+
+@media(max-width:900px){
+  .duo{grid-template-columns:1fr}
+  .duo-block{padding:40px 28px 44px}
+  .coach-grid{grid-template-columns:repeat(2,1fr)}
+  .coaches,.faq{padding:66px 0}
+  /* Coach profile: stack the portrait above the bio, cap its width. */
+  .coach-profile{padding:52px 0 66px}
+  .coach-profile-grid{grid-template-columns:1fr;gap:32px}
+  .coach-profile-photo{max-width:220px}
+  .about{padding:56px 0 10px}
+  /* Slider: tighten the header on phones. The side arrows would overlap the
+     large headline, and swipe + dots cover navigation on touch — so hide the
+     arrows and lean on swipe. */
+  .page-head--slider{padding:150px 0 52px;min-height:min(66vh,520px)}
+  .ph-nav{display:none}
+  .ph-dots{bottom:18px}
+  .ph-dot{width:26px}
+  .ph-dot.is-active{width:40px}
+}
+@media(max-width:560px){
+  .coach-grid{grid-template-columns:1fr}
+}
+
+/* TESTIMONIALS */
+.reviews{padding:110px 0;background:var(--ink2)}
+/* Reviews are a swipe/auto-advancing carousel at every width — 3 cards visible on
+   desktop, ~1 (with a peek) on mobile. Cards are spaced apart so each reads as its
+   own panel; prev/next arrows + dots drive it. Sync + autoplay live in footer.php. */
+.rev-grid{display:flex;gap:22px;
+  overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;scroll-behavior:smooth}
+.rev-grid::-webkit-scrollbar{display:none}
+.rev{flex:0 0 calc((100% - 44px) / 3);background:var(--ink);padding:44px 38px 38px;
+  position:relative;overflow:hidden;scroll-snap-align:start;border:1px solid var(--line);
+  display:flex;flex-direction:column;justify-content:space-between;min-height:280px}
+.rev-mark{position:absolute;top:2px;right:26px;font-family:var(--ff-display);font-weight:700;
+  font-size:8rem;line-height:1;color:var(--red);opacity:.12;pointer-events:none}
+/* Before/after photo — sits at the top of the card, framed with a red rule */
+.rev-photo{position:relative;z-index:1;margin:-44px -38px 26px;
+  border-bottom:3px solid var(--red);background:var(--ink2)}
+.rev-photo img{display:block;width:100%;height:auto}
+.rev blockquote{font-size:1.08rem;line-height:1.55;color:var(--paper);position:relative;z-index:1}
+.rev figcaption{margin-top:28px;display:flex;flex-direction:column;gap:6px}
+.rev-stars{color:var(--red);letter-spacing:.18em;font-size:.82rem}
+.rev-name{font-family:var(--ff-display);text-transform:uppercase;font-weight:600;letter-spacing:.05em}
+/* Carousel prev/next — sit top-right in the section header, matching .ph-nav.
+   Hidden by default; JS reveals them (adds .is-ready) so they never show without
+   their scripted behavior. */
+.rev-nav{display:none;gap:10px;align-self:flex-end}
+.rev-nav.is-ready{display:flex}
+.rev-arrow{width:48px;height:48px;display:flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--line);color:var(--paper);
+  cursor:pointer;transition:.2s}
+.rev-arrow:hover{background:var(--red);border-color:var(--red);color:#fff;
+  box-shadow:0 0 26px rgba(238,36,39,.4)}
+.rev-arrow svg{display:block}
+/* Carousel dots — shown at all widths (populated + synced by JS). */
+.rev-dots{display:flex;justify-content:center;gap:10px;margin-top:34px}
+.rev-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;
+  background:var(--line);cursor:pointer;transition:background .2s,transform .2s}
+.rev-dots button.is-active{background:var(--red);transform:scale(1.35)}
+
+/* STRIP */
+.strip{padding:100px 0;background-position:center;background-size:cover;background-attachment:fixed;
+  text-align:center}
+.strip h2{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:clamp(2.2rem,6vw,5rem);line-height:.95}
+.strip h2 .out{-webkit-text-stroke:1.5px var(--red);color:transparent}
+.strip p{color:#c6c6cc;max-width:560px;margin:22px auto 34px}
+
+/* PROMO VIDEO */
+.video{padding:110px 0;border-top:1px solid var(--line);text-align:center}
+.video .kicker{color:var(--red);margin-bottom:22px}
+.video h2{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:clamp(2rem,4.5vw,3.6rem);line-height:.95;letter-spacing:-.01em;margin-bottom:44px}
+.video h2 em{font-style:normal;color:var(--red)}
+.video-frame{position:relative;max-width:960px;margin:0 auto;aspect-ratio:16/9;
+  background-size:cover;background-position:center;overflow:hidden;
+  border:1px solid var(--line);cursor:pointer}
+.video-frame::after{content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 120px rgba(10,10,11,.6);transition:opacity .4s}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;z-index:3}
+.video-play{position:absolute;inset:0;margin:auto;width:96px;height:96px;z-index:2;
+  display:flex;align-items:center;justify-content:center;background:var(--red);
+  border:0;border-radius:50%;color:#fff;cursor:pointer;transition:.25s;
+  box-shadow:0 0 0 0 rgba(238,36,39,.5)}
+.video-play-ic{display:flex;transform:translateX(2px)}
+.video-frame:hover .video-play{background:var(--red-hot);
+  box-shadow:0 0 40px rgba(238,36,39,.55),0 0 0 12px rgba(238,36,39,.12)}
+.video-frame:hover::after{opacity:.5}
+
+/* STATS band */
+.band{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.band .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.band .cell{padding:48px 24px;border-right:1px solid var(--line);text-align:center}
+.band .cell:last-child{border-right:0}
+.band b{font-family:var(--ff-display);font-weight:700;font-size:3rem;display:block;line-height:1;color:var(--red)}
+.band span{color:var(--mut);font-size:.85rem}
+
+/* JOIN */
+.join{padding:120px 0;display:grid;grid-template-columns:1.1fr .9fr;gap:0;align-items:stretch}
+.join-l{background:var(--red);color:#fff;padding:70px 60px}
+.join-l h2{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
+  font-size:clamp(2.2rem,4vw,3.4rem);line-height:.95;margin-bottom:20px}
+.join-l p{color:#ffffffdd;max-width:40ch;margin-bottom:32px}
+.join-l .steps{list-style:none;display:flex;flex-direction:column;gap:14px}
+.join-l .steps li{display:flex;gap:16px;align-items:baseline;font-weight:500;
+  border-top:1px solid #ffffff33;padding-top:14px}
+.join-l .steps b{font-family:var(--ff-mono);font-size:.8rem}
+.join-l .btn-ghost{border-color:#fff;color:#fff}
+.join-l .btn-ghost:hover{background:#fff;color:var(--red)}
+.join-r{background:var(--ink2);padding:70px 60px;display:flex;flex-direction:column;justify-content:center;gap:22px}
+.join-r .addr{display:flex;gap:16px;align-items:flex-start;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.join-r .addr .ic{color:var(--red);font-size:1.3rem;line-height:1}
+.join-r .addr b{font-family:var(--ff-display);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.join-r .addr span{color:var(--mut);font-size:.92rem}
+
+/* FOOTER */
+footer{padding:80px 0 40px;border-top:1px solid var(--line)}
+.foot-top{display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;margin-bottom:60px}
+/* ClassPass partner badge (carried over from the original o2bodyfit.com footer) */
+.foot-partners{display:flex;align-items:center;gap:28px}
+.foot-partners a{display:inline-flex;opacity:.7;transition:opacity .2s}
+.foot-partners a:hover{opacity:1}
+.foot-partners img{display:block;height:38px;width:auto}
+/* Social icons (Instagram / Facebook) — sit alongside the partner badge. */
+.foot-social{display:flex;align-items:center;gap:18px}
+.foot-social a{display:inline-flex;color:var(--paper);opacity:.7;transition:opacity .2s,color .2s}
+.foot-social a:hover{opacity:1;color:var(--red)}
+.foot-social svg{display:block;width:30px;height:30px}
+.foot-bot{display:flex;justify-content:space-between;gap:20px;padding-top:26px;
+  border-top:1px solid var(--line);color:var(--mut);flex-wrap:wrap;font-size:.82rem}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:900px){
+  /* Home hero, phones only: drop the gradient/blur so the header sits clean over
+     the hero. Reuses body.scrolled (set by the same IntersectionObserver that
+     reveals the .navbrand); once the hero scrolls past, the backdrop returns.
+     Hamburger is untouched. */
+  body.home:not(.scrolled):not(.nav-open) header{background:none;backdrop-filter:none}
+  /* Menu open: header goes solid to match the drop-down panel (--ink2) instead of
+     showing the hero through it. Applies on every page the mobile menu opens on. */
+  body.nav-open header{background:var(--ink2);backdrop-filter:none}
+  /* Mobile nav: turn the link row into a drop-down panel toggled by .navtoggle */
+  .navlinks{position:fixed;top:78px;left:0;right:0;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--ink2);border-top:2px solid var(--red);
+    padding:8px 0;gap:0;
+    transform:translateY(-12px);opacity:0;pointer-events:none;visibility:hidden;
+    transition:opacity .25s,transform .25s,visibility .25s;
+    box-shadow:0 24px 40px rgba(0,0,0,.5)}
+  body.nav-open .navlinks{transform:none;opacity:1;pointer-events:auto;visibility:visible}
+  .navlinks a{padding:16px 32px;font-size:.9rem;border-bottom:1px solid var(--line)}
+  .navlinks a::after{display:none}
+  .navlinks a:last-child{border-bottom:0;margin:12px 32px 6px;text-align:center}
+  .navtoggle{display:flex;align-items:center;justify-content:center;
+    width:44px;height:44px;background:none;border:1px solid var(--line);
+    cursor:pointer;transition:border-color .2s}
+  /* Hamburger: middle bar is the element; ::before/::after are the outer bars. */
+  .navtoggle .bars,.navtoggle .bars::before,.navtoggle .bars::after{
+    content:"";display:block;width:20px;height:2px;background:var(--paper);
+    transition:transform .2s,opacity .2s,background .2s}
+  .navtoggle .bars{position:relative}
+  .navtoggle .bars::before,.navtoggle .bars::after{position:absolute;left:0}
+  .navtoggle .bars::before{top:-6px}
+  .navtoggle .bars::after{top:6px}
+  /* Open state: bars collapse into an X and pick up the brand red. */
+  body.nav-open .navtoggle{border-color:var(--red)}
+  body.nav-open .navtoggle .bars{background:transparent}
+  body.nav-open .navtoggle .bars::before{transform:translateY(6px) rotate(45deg);background:var(--red)}
+  body.nav-open .navtoggle .bars::after{transform:translateY(-6px) rotate(-45deg);background:var(--red)}
+  /* Hide the scrolling marquee (Bootcamp / OCR / Hyrox …) on phones. */
+  .ticker{display:none}
+  .prog-grid{grid-template-columns:1fr}
+  .band .wrap{grid-template-columns:repeat(2,1fr)}
+  .band .cell:nth-child(2){border-right:0}
+  .band .cell:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .join{grid-template-columns:1fr}
+  .join-l,.join-r{padding:50px 32px}
+  .strip{background-attachment:scroll}
+  .sched-fixed{grid-template-columns:1fr}
+  .sched-block{padding:40px 28px 44px}
+  .member-hub-grid{grid-template-columns:1fr}
+  .member-card{padding:38px 28px;min-height:0}
+  .member-hub,.member-portal{padding:120px 0 66px}
+  .member-gate{padding:48px 28px}
+  .member-embed{padding:48px 20px}
+  .member-embed-frame iframe{height:640px}
+  .trial{padding:48px 0 66px}
+  .trial-card{padding:40px 26px}
+  .contact{padding:48px 0 66px}
+  .calendar{padding:48px 0 66px}
+  .contact-grid{grid-template-columns:1fr;gap:24px}
+  .contact-details{padding:32px 26px}
+  .contact-map iframe{min-height:280px}
+  /* Reviews carousel on phones: one card at a time with a peek of the next as a
+     swipe affordance. The base .rev-grid already handles flex + scroll-snap; here
+     we just widen the cards and go full-bleed (cancel the .wrap padding). Arrows
+     hide — swipe + dots are enough on touch (mirrors the About slider). */
+  .rev-grid{gap:14px;padding-bottom:4px;
+    margin-left:-22px;margin-right:-22px;padding-left:22px;padding-right:22px;
+    scroll-padding-left:22px}
+  .rev{flex:0 0 87%;min-height:0}
+  .rev-nav,.rev-nav.is-ready{display:none}
+  .rev-dots{margin-top:26px}
+  /* tighten desktop-sized rhythm on phones */
+  .wrap{padding:0 22px}
+  .programs,.schedule,.reviews,.video{padding:66px 0}
+  .video h2{margin-bottom:32px}
+  .video-play{width:72px;height:72px}
+  /* Full-bleed video on phones: cancel the .wrap side padding (22px) so the
+     frame runs edge-to-edge, and drop the side borders that would box it in. */
+  .video-frame{margin-left:-22px;margin-right:-22px;border-left:0;border-right:0}
+  .strip{padding:70px 0}
+  .band .cell{padding:34px 18px}
+  .sec-head{margin-bottom:36px}
+  .sec-head p{text-align:left!important}
+  .hero{min-height:auto;padding-top:150px;padding-bottom:56px}
+  /* Speed up the marquee on mobile — the track is shorter, so a slower
+     duration reads as sluggish; 15s keeps it lively at phone widths. */
+  .ticker-track{animation-duration:15s}
+  /* Footer: stack and center everything on phones. */
+  .foot-top{flex-direction:column;align-items:center;text-align:center;gap:32px}
+  .foot-partners{flex-direction:column;gap:22px}
+  .foot-social{justify-content:center}
+  .foot-bot{flex-direction:column;align-items:center;text-align:center;gap:14px}
+}
+
+@media(max-width:560px){
+  .band .wrap{grid-template-columns:1fr}
+  .band .cell{border-right:0;border-bottom:1px solid var(--line)}
+  .band .cell:last-child{border-bottom:0}
+  .sched-times{gap:40px}
+  .hero-cta{flex-direction:column;align-items:stretch}
+  .hero-cta .btn{text-align:center}
+}
