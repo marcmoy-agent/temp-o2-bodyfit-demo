@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body data-active-nav="contact">
   <div id="site-header"></div>
@@ -29,6 +30,7 @@
             <div class="trial-field"><label for="contact-subject" class="mono">Subject</label><input type="text" id="contact-subject" name="subject"></div>
             <div class="trial-field"><label for="contact-message" class="mono">Your Message</label><textarea id="contact-message" name="message" rows="6" required></textarea></div>
             <div class="trial-hp" aria-hidden="true"><label for="contact-website">Website</label><input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off"></div>
+            <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark"></div>
             <button type="submit" class="btn">Send Message</button>
           </form>
           <p class="trial-note">Submitting opens a pre-filled draft in your email app. Prefer to reach us directly? <a href="tel:4152941136">(415) 294-1136</a> · <a href="mailto:info@o2bodyfit.com">info@o2bodyfit.com</a></p>
@@ -44,6 +46,15 @@
             <iframe title="Map to O2 BodyFit — 56 Hill Street, Daly City, CA 94014" src="https://www.google.com/maps?q=56%20Hill%20Street%2C%20Daly%20City%2C%20CA%2094014&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
           </div>
         </div>
+      </div>
+      <div class="pt-callout-row rv">
+        <a class="pt-callout" href="../personal-small-group-training/">
+          <div>
+            <b>Interested in personal training?</b>
+            <span>Custom programming, 1-on-1 or small group — your first intro session is free.</span>
+          </div>
+          <span class="pt-callout-go">Learn more <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>
+        </a>
       </div>
     </div>
   </section>

@@ -8,19 +8,51 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body data-active-nav="members">
   <div id="site-header"></div>
-  <section class="member-portal">
+  <section class="page-head">
+    <div class="wrap rv">
+      <span class="sec-num">/ Membership Cancellation</span>
+      <h1>Cancel your <em>membership</em></h1>
+      <p>Cancellation notices must be submitted at least 3 business days before your next billing date.</p>
+    </div>
+  </section>
+  <section class="trial">
     <div class="wrap">
-      <div class="member-gate rv">
-        <span class="member-gate-badge mono">Members only</span>
-        <h2>Membership cancellation</h2>
-        <p>Cancellation requests should be handled directly with the gym. For the static-site version, this page is a placeholder until a dedicated form backend is added.</p>
-        <div class="member-gate-actions">
-          <a class="btn" href="tel:4152941136">(415) 294-1136</a>
-          <a class="btn btn-ghost" href="mailto:info@o2bodyfit.com">Email the gym</a>
-        </div>
+      <div class="trial-card rv">
+        <h2>Cancellation request</h2>
+        <form class="trial-form" action="mailto:info@o2bodyfit.com" method="post" enctype="text/plain">
+          <input type="hidden" name="channel" value="cancellation">
+          <div class="trial-field"><label for="cancel-first" class="mono">First Name</label><input type="text" id="cancel-first" name="first-name" required></div>
+          <div class="trial-field"><label for="cancel-last" class="mono">Last Name</label><input type="text" id="cancel-last" name="last-name" required></div>
+          <div class="trial-field"><label for="cancel-email" class="mono">Email</label><input type="email" id="cancel-email" name="email" required></div>
+          <div class="trial-field"><label for="cancel-phone" class="mono">Phone</label><input type="tel" id="cancel-phone" name="phone"></div>
+          <div class="trial-field">
+            <label for="cancel-reason" class="mono">I am canceling because:</label>
+            <select id="cancel-reason" name="reason">
+              <option value="">— Please choose an option —</option>
+              <option value="Illness / Injury">Illness / Injury</option>
+              <option value="Moving">Moving</option>
+              <option value="Financial Burden">Financial Burden</option>
+              <option value="Doesn’t Fit Schedule">Doesn’t Fit Schedule</option>
+              <option value="Unsatisfied With Programs/Services">Unsatisfied With Programs/Services (please comment)</option>
+              <option value="Other">Other (please comment)</option>
+            </select>
+          </div>
+          <div class="trial-field"><label for="cancel-comments" class="mono">Comments</label><textarea id="cancel-comments" name="comments" rows="4"></textarea></div>
+          <label class="trial-consent">
+            <input type="checkbox" name="consent" value="agreed" required>
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="txt">Cancellation notices must be submitted at least 3 business days before your next billing date. By submitting this form, I am giving O2 BodyFit my 3-day written notice to cancel my membership. I understand that my membership will be canceled 3 days from the date this form was submitted. I understand that I will be charged any early cancellation fees based on the membership policies and terms I agreed upon. Should I choose to rejoin O2 BodyFit after the termination of my membership, I will have to pay at the then current rate.</span>
+          </label>
+          <div class="trial-hp" aria-hidden="true"><label for="cancel-website">Website</label><input type="text" id="cancel-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <!-- Turnstile: test sitekey (always passes). Swap for the real key at launch. -->
+          <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark"></div>
+          <button type="submit" class="btn">Submit Cancellation Request</button>
+        </form>
+        <p class="trial-note">We process cancellations directly with the gym. Prefer to reach us directly? <a href="tel:4152941136">(415) 294-1136</a> · <a href="mailto:info@o2bodyfit.com">info@o2bodyfit.com</a></p>
       </div>
     </div>
   </section>
