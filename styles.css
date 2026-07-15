@@ -111,7 +111,7 @@ body.home.nav-open .navbrand{opacity:1;transform:none;pointer-events:auto}
 /* marquee ticker */
 .ticker{background:var(--red);color:#fff;overflow:hidden;padding:12px 0;
   border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
-.ticker-track{display:flex;gap:0;white-space:nowrap;animation:scroll 30s linear infinite;font-family:var(--ff-display);
+.ticker-track{display:flex;gap:0;white-space:nowrap;animation:scroll 90s linear infinite;font-family:var(--ff-display);
   text-transform:uppercase;font-weight:700;font-size:1.05rem;letter-spacing:.05em}
 .ticker-track span{padding:0 28px;display:inline-flex;align-items:center;gap:28px}
 .ticker-track span::after{content:"◆";font-size:.6rem}
@@ -719,8 +719,8 @@ footer{padding:80px 0 40px;border-top:1px solid var(--line)}
   .sec-head p{text-align:left!important}
   .hero{min-height:auto;padding-top:150px;padding-bottom:56px}
   /* Speed up the marquee on mobile — the track is shorter, so a slower
-     duration reads as sluggish; 15s keeps it lively at phone widths. */
-  .ticker-track{animation-duration:15s}
+     duration reads as sluggish; 45s keeps it lively at phone widths. */
+  .ticker-track{animation-duration:45s}
   /* Footer: stack and center everything on phones. */
   .foot-top{flex-direction:column;align-items:center;text-align:center;gap:32px}
   .foot-partners{flex-direction:column;gap:22px}
