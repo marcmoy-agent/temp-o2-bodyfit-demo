@@ -207,6 +207,60 @@ setTimeout(() => revealables.forEach((el) => el.classList.add("in")), 2500);
 })();
 
 (() => {
+  const WORKER_URL = "https://o2-bodyfit-forms.marcmoy-agent.workers.dev/api/submit";
+
+  document.querySelectorAll("form.trial-form").forEach((form) => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const customError = form.querySelector(".trial-error:not([hidden])");
+      if (customError) return;
+
+      const btn = form.querySelector("button[type=submit]");
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Sending…";
+
+      let existing = form.querySelector(".form-status");
+      if (existing) existing.remove();
+
+      const status = document.createElement("p");
+      status.className = "form-status";
+
+      try {
+        const data = new FormData(form);
+        const res = await fetch(WORKER_URL, { method: "POST", body: data });
+        const json = await res.json();
+        if (json.ok) {
+          status.classList.add("form-status--ok");
+          status.textContent = "Sent! We’ll be in touch soon.";
+          form.reset();
+          const widget = form.querySelector(".cf-turnstile");
+          if (widget && window.turnstile) window.turnstile.reset(widget);
+        } else {
+          status.classList.add("form-status--err");
+          if (json.error === "verification") {
+            status.textContent = "Verification failed — please try again.";
+          } else if (json.error && json.error.startsWith("Missing")) {
+            status.textContent = `Please fill in: ${json.error.replace("Missing: ", "")}`;
+          } else {
+            status.textContent = "Something went wrong. Please try again or call us.";
+          }
+        }
+      } catch {
+        status.classList.add("form-status--err");
+        status.textContent = "Network error — please check your connection and try again.";
+      }
+
+      btn.disabled = false;
+      btn.textContent = originalText;
+      form.appendChild(status);
+    });
+  });
+})();
+
+(() => {
   const track = document.querySelector(".rev-grid");
   const dots = document.querySelector(".rev-dots");
   if (!track || !dots) return;

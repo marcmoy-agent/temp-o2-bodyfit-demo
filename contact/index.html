@@ -24,7 +24,8 @@
       <div class="contact-grid">
         <div class="trial-card rv">
           <h2>Send us a message</h2>
-          <form class="trial-form" action="mailto:info@o2bodyfit.com" method="post" enctype="text/plain">
+          <form class="trial-form" method="post">
+            <input type="hidden" name="channel" value="contact">
             <div class="trial-field"><label for="contact-name" class="mono">Your Name</label><input type="text" id="contact-name" name="name" required></div>
             <div class="trial-field"><label for="contact-email" class="mono">Your Email</label><input type="email" id="contact-email" name="email" required></div>
             <div class="trial-field"><label for="contact-subject" class="mono">Subject</label><input type="text" id="contact-subject" name="subject"></div>
@@ -33,7 +34,7 @@
             <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark"></div>
             <button type="submit" class="btn">Send Message</button>
           </form>
-          <p class="trial-note">Submitting opens a pre-filled draft in your email app. Prefer to reach us directly? <a href="tel:4152941136">(415) 294-1136</a> · <a href="mailto:info@o2bodyfit.com">info@o2bodyfit.com</a></p>
+          <p class="trial-note">Prefer to reach us directly? <a href="tel:4152941136">(415) 294-1136</a> · <a href="mailto:info@o2bodyfit.com">info@o2bodyfit.com</a></p>
         </div>
         <div class="contact-info rv">
           <div class="contact-details">
