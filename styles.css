@@ -593,7 +593,8 @@ a.coach:hover h3{color:var(--red)}
 .band span{color:var(--mut);font-size:.85rem}
 
 /* JOIN */
-.join{padding:120px 0;display:grid;grid-template-columns:1.1fr .9fr;gap:0;align-items:stretch}
+.join{padding:120px 32px;display:grid;grid-template-columns:1.1fr .9fr;gap:0;align-items:stretch;
+  max-width:1280px;margin:0 auto}
 .join-l{background:var(--red);color:#fff;padding:70px 60px}
 .join-l h2{font-family:var(--ff-display);text-transform:uppercase;font-weight:700;
   font-size:clamp(2.2rem,4vw,3.4rem);line-height:.95;margin-bottom:20px}
